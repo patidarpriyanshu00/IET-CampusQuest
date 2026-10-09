@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>IET DAVV - The Marauder's Quest</title>
+
+  <!-- Wizarding Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=MedievalSharp&family=Lora:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Screen 1: Registration / House Sorting -->
+  <section id="screen-register" class="screen-view">
+    <div class="parchment-scroll auth-scroll">
+      <div class="crest-seal">⚡</div>
+      <h1 class="wizard-title">The IET CampusQuest</h1>
+    
+      <p class="scroll-intro">IET DAVV magical geofenced clue hunt. Tread the enchanted grounds to unlock ancient secrets.</p>
+
+      <form id="auth-form">
+        <label for="player-roll">Student Roll Number</label>
+        <input type="text" id="player-roll" placeholder="e.g. 24T1042" required autocomplete="off" />
+
+        <label for="player-name">Team Name</label>
+        <input type="text" id="player-name" placeholder="e.g. Padfoot, Seeker 07" required autocomplete="off" />
+
+        <label for="player-house">Assigned Hogwarts House</label>
+        
+
+        <button type="submit" class="spell-btn primary">Welcome To Hogwarts Riddle</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Screen 2: Main Wizard HUD -->
+  <section id="screen-hud" class="screen-view hidden">
+    <!-- Hogwarts Header -->
+    <header class="parchment-bar">
+      <div class="wizard-meta">
+        <span class="meta-sub">ENCHANTER</span>
+        <strong id="hud-codename">---</strong>
+        <span id="gps-indicator" class="spell-badge">Summoning Owls (GPS)...</span>
+      </div>
+      <div class="house-points">
+        <span class="meta-sub">HOUSE POINTS</span>
+        <strong id="hud-score">0</strong>
+      </div>
+    </header>
+
+    <!-- Map Canvas (Parchment Styled) -->
+    <div id="map-frame">
+      <div id="map"></div>
+    </div>
+
+    <!-- Parchment Lower Codex -->
+    <main class="parchment-codex">
+      <nav class="codex-nav">
+        <button id="tab-mission" class="nav-tab active">📜 Active Clue</button>
+        <button id="tab-powerups" class="nav-tab">✨ Inventory</button>
+        <button id="tab-board" class="nav-tab">🏆 House Cup</button>
+        <button id="tab-admin" class="nav-tab">🗝️ Headmaster</button>
+      </nav>
+
+      <!-- Active Clue Tab -->
+      <div id="view-mission" class="tab-pane active">
+        <div class="clue-ribbon">
+          <span class="ribbon-badge" id="target-index">MYSTERY I OF V</span>
+          <span class="ribbon-dist" id="distance-readout">Tracking footsteps...</span>
+        </div>
+        <h3 id="target-title" class="enchanted-target">Enchanted Mystery Zone</h3>
+        <p id="clue-body" class="scroll-riddle">Scanning ancient parchments...</p>
+
+        <div id="revealed-hint-container" class="lumos-box hidden">
+          <strong>🪄 Lumos Revelio:</strong> <span id="revealed-hint-text"></span>
+        </div>
+
+        <button id="claim-btn" class="spell-btn unlock-btn" disabled>
+          🔒 Warded: Move closer to breach the barrier
+        </button>
+      </div>
+
+      <!-- Spells & Power-Ups Tab -->
+      <div id="view-powerups" class="tab-pane">
+        <div class="spell-deck">
+          <div class="spell-item">
+            <div class="spell-info">
+              <h4>🧹 Firebolt Overdrive</h4>
+              <p>Extend your geofence radius by +25m with nimble broomstick maneuvers.</p>
+            </div>
+            <button id="btn-powerup-radius" class="spell-btn micro">
+              Cast (<span id="count-radius">1</span>)
+            </button>
+          </div>
+
+          <div class="spell-item">
+            <div class="spell-info">
+              <h4>🪄 Lumos Revelio</h4>
+              <p>Cast light upon the mystery to decipher direct landmark directions.</p>
+            </div>
+            <button id="btn-powerup-hint" class="spell-btn micro">
+              Cast (<span id="count-hint">1</span>)
+            </button>
+          </div>
+
+          <div class="spell-item">
+            <div class="spell-info">
+              <h4>🧪 Felix Felicis (Liquid Luck)</h4>
+              <p>Brew of pure fortune! Doubles your points (+200 pts) for 60 seconds.</p>
+            </div>
+            <button id="btn-powerup-multiplier" class="spell-btn micro">
+              Drink (<span id="count-mult">1</span>)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- House Cup Leaderboard Tab -->
+      <div id="view-board" class="tab-pane">
+        <table class="hogwarts-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Roll No</th>
+              <th>Wizard</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Headmaster (Admin) Tab -->
+      <div id="view-admin" class="tab-pane">
+        <form id="admin-form" class="admin-parchment">
+          <h4>Enchant A New Location</h4>
+          <input type="text" id="admin-name" placeholder="Actual Campus Place Name" required />
+          <input type="number" step="any" id="admin-lat" placeholder="Latitude (e.g., 22.6820)" required />
+          <input type="number" step="any" id="admin-lng" placeholder="Longitude (e.g., 75.8795)" required />
+          <input type="number" id="admin-rad" placeholder="Zone Radius in Meters (e.g., 30)" required />
+          <textarea id="admin-riddle" placeholder="Riddle / Marauder Clue for the map" required></textarea>
+          <textarea id="admin-intel" placeholder="Lumos Revelio Hint text" required></textarea>
+          <button type="submit" class="spell-btn primary">Inscribe into Marauder's Map</button>
+        </form>
+      </div>
+    </main>
+  </section>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

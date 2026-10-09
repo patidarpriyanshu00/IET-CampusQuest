@@ -1,0 +1,413 @@
+:root {
+  --parchment-light: #f4ecd8;
+  --parchment-base: #e8d8b5;
+  --parchment-shadow: #cbb488;
+  --parchment-ink: #2b1d0c;
+  --ink-faded: #5a452a;
+  --burgundy: #740001;
+  --gold: #d3a625;
+  --gold-glow: #eeba30;
+  --border-vintage: #a08456;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: #120d08;
+  color: var(--parchment-ink);
+  font-family: 'Lora', serif;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Auth / Register Scroll */
+.screen-view {
+  width: 100vw;
+  height: 100vh;
+}
+
+#screen-register {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: radial-gradient(circle, #241408 0%, #0d0703 100%);
+}
+
+.parchment-scroll {
+  background: var(--parchment-base);
+  background-image: radial-gradient(circle at 50% 50%, #f4ecd8, #dfcc9f);
+  border: 4px double var(--burgundy);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.9), inset 0 0 45px rgba(116, 0, 1, 0.15);
+  border-radius: 8px;
+  padding: 24px;
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  position: relative;
+}
+
+.crest-seal {
+  font-size: 2.2rem;
+  color: var(--gold);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  margin-bottom: 4px;
+}
+
+.wizard-title {
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  color: var(--burgundy);
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+}
+
+.flavor-quote {
+  font-family: 'MedievalSharp', cursive;
+  color: var(--ink-faded);
+  font-style: italic;
+  font-size: 0.95rem;
+  margin: 4px 0 10px;
+}
+
+.scroll-intro {
+  font-size: 0.85rem;
+  color: var(--parchment-ink);
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  text-align: left;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.5px;
+  color: var(--burgundy);
+  margin-bottom: 4px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  background: #fdfaf2;
+  border: 1.5px solid var(--border-vintage);
+  border-radius: 4px;
+  font-family: 'Lora', serif;
+  color: var(--parchment-ink);
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+  outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--burgundy);
+  box-shadow: 0 0 6px rgba(116, 0, 1, 0.3);
+}
+
+/* Spell Buttons */
+.spell-btn {
+  width: 100%;
+  padding: 12px;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  border: 2px solid var(--border-vintage);
+}
+
+.spell-btn.primary {
+  background: var(--burgundy);
+  color: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.spell-btn.primary:hover {
+  background: #8b0000;
+  box-shadow: 0 0 15px rgba(211, 166, 37, 0.5);
+}
+
+.spell-btn.unlock-btn {
+  background: #473a2b;
+  color: #cbb488;
+}
+
+.spell-btn.unlocked-ready {
+  background: #14532d !important;
+  color: #86efac !important;
+  border-color: #22c55e !important;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.6);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.spell-btn.micro {
+  width: auto;
+  padding: 6px 12px;
+  font-size: 0.72rem;
+  background: var(--burgundy);
+  color: var(--gold);
+}
+
+.spell-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  animation: none;
+}
+
+/* Wizard HUD */
+#screen-hud {
+  display: flex;
+  flex-direction: column;
+}
+
+.parchment-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: #1e1309;
+  border-bottom: 2px solid var(--gold);
+  color: var(--parchment-light);
+  z-index: 500;
+}
+
+.meta-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  color: var(--gold);
+  letter-spacing: 1px;
+  display: block;
+}
+
+.spell-badge {
+  font-size: 0.65rem;
+  background: #78350f;
+  color: #fef3c7;
+  padding: 2px 6px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-top: 2px;
+}
+
+.spell-badge.enchanted {
+  background: #166534;
+  color: #dcfce7;
+}
+
+.house-points strong {
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+}
+
+/* Map Frame with Marauder's Parchment Look */
+#map-frame {
+  height: 44vh;
+  position: relative;
+  background: #2a1e12;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  /* Sepia / Aged parchment filter over OpenStreetMap */
+  filter: sepia(0.65) contrast(1.1) brightness(0.9) hue-rotate(-20deg);
+}
+
+/* Custom Broomstick Player Marker */
+.broom-marker {
+  font-size: 26px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7));
+  transform: rotate(-25deg);
+  cursor: pointer;
+  animation: float 2s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(-25deg); }
+  100% { transform: translateY(-6px) rotate(-20deg); }
+}
+
+/* Bottom Codex */
+.parchment-codex {
+  flex: 1;
+  background: var(--parchment-base);
+  background-image: radial-gradient(circle at 50% 50%, #f4ecd8, #dfcc9f);
+  border-top: 3px solid var(--gold);
+  display: flex;
+  flex-direction: column;
+  box-shadow: inset 0 0 30px rgba(116, 0, 1, 0.1);
+  overflow: hidden;
+}
+
+.codex-nav {
+  display: flex;
+  background: #241408;
+  border-bottom: 2px solid var(--border-vintage);
+}
+
+.nav-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #baa482;
+  padding: 10px 4px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+
+.nav-tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  background: rgba(211, 166, 37, 0.08);
+}
+
+.tab-pane {
+  display: none;
+  padding: 14px 16px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* Clue & Ribbon Design */
+.clue-ribbon {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.ribbon-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--burgundy);
+  color: var(--gold);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+.ribbon-dist {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 0.85rem;
+  color: var(--burgundy);
+  font-weight: bold;
+}
+
+.enchanted-target {
+  font-family: 'Cinzel', serif;
+  font-size: 1.15rem;
+  color: var(--burgundy);
+  margin-bottom: 6px;
+}
+
+.scroll-riddle {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--parchment-ink);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.lumos-box {
+  background: rgba(254, 240, 138, 0.4);
+  border-left: 4px solid var(--gold);
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  color: #713f12;
+  margin-bottom: 12px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Spell Deck */
+.spell-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.spell-item {
+  background: #fdfaf2;
+  border: 1.5px solid var(--border-vintage);
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.spell-info h4 {
+  font-family: 'Cinzel', serif;
+  font-size: 0.88rem;
+  color: var(--burgundy);
+}
+
+.spell-info p {
+  font-size: 0.75rem;
+  color: var(--ink-faded);
+}
+
+/* Hogwarts Leaderboard */
+.hogwarts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.hogwarts-table th, .hogwarts-table td {
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-vintage);
+}
+
+.hogwarts-table th {
+  font-family: 'Cinzel', serif;
+  color: var(--burgundy);
+  font-weight: 700;
+}
+
+/* Admin */
+.admin-parchment {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-parchment h4 {
+  font-family: 'Cinzel', serif;
+  color: var(--burgundy);
+  margin-bottom: 6px;
+}
+
+.admin-parchment textarea {
+  height: 55px;
+  resize: none;
+}
