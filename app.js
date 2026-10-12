@@ -107,23 +107,12 @@ const broomIcon = L.divIcon({
 let playerBroomMarker = null;
 let enchantedZoneCircle = null;
 
+// Circle is cleared so the riddle destination is not revealed on the map
 function renderEnchantedZone() {
-  const target = gameState.checkpoints[gameState.currentIdx];
-  if (!target) return;
-
-  if (enchantedZoneCircle) map.removeLayer(enchantedZoneCircle);
-
-  const effectiveRadius = target.radius + gameState.activeRadiusBoost;
-  enchantedZoneCircle = L.circle([target.lat, target.lng], {
-    color: "#740001",
-    weight: 2,
-    dashArray: "6, 6",
-    fillColor: "#d3a625",
-    fillOpacity: 0.28,
-    radius: effectiveRadius
-  }).addTo(map);
-
-  enchantedZoneCircle.bindPopup(`<b>Enchanted Zone #${gameState.currentIdx + 1}</b><br>Ward Radius: ${effectiveRadius}m`);
+  if (enchantedZoneCircle) {
+    map.removeLayer(enchantedZoneCircle);
+    enchantedZoneCircle = null;
+  }
 }
 
 // --- 5. GPS Tracking ---
@@ -195,7 +184,7 @@ function updateMarauderHUD() {
         current.lng
       )
     );
-    distReadout.innerText = `${dist}m from perimeter`;
+    distReadout.innerText = "Follow the clue...";
 
     const threshold = current.radius + gameState.activeRadiusBoost;
     if (dist <= threshold) {
@@ -205,7 +194,7 @@ function updateMarauderHUD() {
     } else {
       claimBtn.disabled = true;
       claimBtn.classList.remove("unlocked-ready");
-      claimBtn.innerText = `🔒 Warded: Move ${dist - threshold}m closer`;
+      claimBtn.innerText = "🔒 Warded: Search for the location";
     }
   }
 }
